@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>D.ip - Verification</title>
+    <link rel="stylesheet" href="style.css">
+    <link href="https://googleapis.com" rel="stylesheet">
+</head>
+<body>
+    <header class="reg-header">
+        <img src="logo.png" alt="D.ip Logo" class="header-logo">
+        <button onclick="window.location.href='main.html'" class="btn-back">
+            <span class="material-icons">arrow_back</span>Back
+        </button>
+    </header>
+    <main class="reg-main">
+        <div class="card-container confirm-card">
+            <div class="email-display-box" id="userEmailDisplay">your_email@gmail.com</div>
+            <div class="code-verification-zone">
+                <div class="code-inputs">
+                    <input type="text" maxlength="1" class="code-box" autofocus>
+                    <input type="text" maxlength="1" class="code-box">
+                    <input type="text" maxlength="1" class="code-box">
+                    <input type="text" maxlength="1" class="code-box">
+                </div>
+                <button id="btnVerifyCode" class="btn-arrow" aria-label="Подтвердить код">
+                    <svg viewBox="0 0 24 24" fill="none" xmlns="http://w3.org">
+                        <path d="M12 5V19M12 19L19 12M12 19L5 12" stroke="white" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+                    </svg>
+                </button>
+            </div>
+            <div class="resend-container">
+                <button class="btn-resend" aria-label="Отправить код повторно">
+                    <span class="material-icons">refresh</span>
+                </button>
+            </div>
+        </div>
+    </main>
+    <script>
+        const savedEmail = sessionStorage.getItem('currentSessionEmail') || 'unknown@gmail.com';
+        document.getElementById('userEmailDisplay').textContent = savedEmail;
+        const inputs = document.querySelectorAll('.code-box');
+        const verifyBtn = document.getElementById('btnVerifyCode');
+
+        function isCodeValid() {
+            const codeTimestamp = sessionStorage.getItem('codeTimestamp');
+            if (!codeTimestamp) return false;
+            return (Date.now() - parseInt(codeTimestamp, 10)) < 5 * 60 * 1000;
+        }
+
+        const timerInterval = setInterval(() => {
+            if (!isCodeValid()) {
+                clearInterval(timerInterval);
+                alert("Время действия кода (5 минут) истекло!");
+                sessionStorage.removeItem('verificationCode');
+                window.location.href = 'main.html';
+            }
+        }, 1000);
+
+        function resendCode() {
+            const newCode = Math.floor(1000 + Math.random() * 9000).toString();
+            sessionStorage.setItem('verificationCode', newCode);
+            sessionStorage.setItem('codeTimestamp', Date.now());
+            
+            fetch('http://localhost:8080', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ to_email: savedEmail, verification_code: newCode })
+            }).then(() => alert("Новый код отправлен на почту!"));
+            
+            inputs.forEach(input => input.value = "");
+            inputs.focus();
+        }
+
+        document.querySelector('.btn-resend').addEventListener('click', resendCode);
+        inputs.forEach((input, index) => {
+            input.addEventListener('input', (e) => { if (e.target.value.length === 1 && index < inputs.length - 1) inputs[index + 1].focus(); });
+            input.addEventListener('keydown', (e) => { if (e.key === 'Backspace' && !e.target.value && index > 0) inputs[index - 1].focus(); });
+        });
+
+        verifyBtn.addEventListener('click', () => {
+            if (!isCodeValid()) { alert("Срок действия кода истек!"); window.location.href = 'main.html'; return; }
+            const activeCode = sessionStorage.getItem('verificationCode');
+            let enteredCode = "";
+            inputs.forEach(input => enteredCode += input.value);
+            if (enteredCode === activeCode && activeCode !== null) {
+                alert("Код подтвержден!");
+                sessionStorage.removeItem('verificationCode');
+                window.location.href = 'dashboard.html';
+            } else {
+                alert("Неверный код!");
+                inputs.forEach(input => input.value = "");
+                inputs.focus();
+            }
+        });
+    </script>
+</body>
+</html>
