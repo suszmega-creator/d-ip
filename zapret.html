@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>D.ip - ZAPRET.D</title>
+    <link rel="stylesheet" href="style.css">
+    <link href="https://googleapis.com" rel="stylesheet">
+</head>
+<body class="vip-body">
+    <div class="vip-page-container">
+        <div class="code-viewer-section">
+            <div class="code-header-bar">
+                <div class="code-title"><span class="tech-label">python</span>
+                    <button class="btn-copy-code" id="copyCodeBtn"><span class="material-icons">content_copy</span></button>
+                </div>
+                <button onclick="window.location.href='dashboard.html'" class="btn-close-vip"><span class="material-icons">close</span></button>
+            </div>
+            <div class="code-scroll-box">
+                <div class="code-block-wrapper">
+                    <h3>// КОД ДЛЯ СРЕДНИХ ПК (ZAPRET v1.2)</h3>
+                    <pre><code id="mediumPcCode">import os, sys, time
+def run_zapret_medium():
+    print("[D.ip] Запуск ZAPRET для СРЕДНИХ ПК...")
+    os.system("echo Оптимизация сети...")
+    time.sleep(1)
+if __name__ == '__main__': run_zapret_medium()</code></pre>
+                </div>
+                <div class="code-divider"></div>
+                <div class="code-block-wrapper">
+                    <h3>// КОД ДЛЯ СЛАБЫХ ПК (ZAPRET v1.1)</h3>
+                    <pre><code id="weakPcCode">import os, time
+def run_zapret_weak():
+    print("[D.ip] Облегченный ZAPRET для СЛАБЫХ ПК...")
+    time.sleep(1)
+if __name__ == '__main__': run_zapret_weak()</code></pre>
+                </div>
+            </div>
+        </div>
+        <div class="downloads-section">
+            <div class="download-card">
+                <div class="folder-row"><div class="folder-icon-box">📁</div><a href="zapret_v1.2_medium.zip" download class="btn-download-green">DOWNLOAD ▼</a></div>
+                <div class="version-label">v1.2 D. ip</div>
+            </div>
+            <div class="download-card">
+                <div class="folder-row"><div class="folder-icon-box">📁</div><a href="zapret_v1.1_weak.zip" download class="btn-download-green">DOWNLOAD ▼</a></div>
+                <div class="version-label">v1.1 D. ip</div>
+            </div>
+        </div>
+    </div>
+    <script>
+        document.getElementById('copyCodeBtn').addEventListener('click', () => {
+            const fullCode = `${document.getElementById('mediumPcCode').innerText}\n\n${document.getElementById('weakPcCode').innerText}`;
+            navigator.clipboard.writeText(fullCode).then(() => alert("Код скопирован! 📋"));
+        });
+    </script>
+</body>
+</html>
