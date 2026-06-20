@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>D.ip - Antivirus Settings</title>
+    <link rel="stylesheet" href="style.css">
+    <link href="https://googleapis.com" rel="stylesheet">
+</head>
+<body class="settings-body">
+    <button onclick="window.location.href='dashboard.html'" class="settings-back-x"><span class="material-icons">close</span></button>
+    <div class="settings-container">
+        <div class="setting-row"><p class="setting-text">appearance of a popup window when a virus is suspected</p><label class="switch"><input type="checkbox" id="togglePopupOnVirus"><span class="slider"></span></label></div>
+        <div class="setting-row"><p class="setting-text font-outlined">instant deletion when a threat is suspected</p><label class="switch"><input type="checkbox" id="toggleInstantDelete"><span class="slider"></span></label></div>
+        <div class="setting-row"><p class="setting-text">delete file only if 3 threats are found (3 minuses)</p><label class="switch"><input type="checkbox" id="toggleDeleteOnThree"><span class="slider"></span></label></div>
+        <div class="settings-footer"><p class="warning-text">Warning! This button deactivates the antivirus</p><button class="btn-deactivate-close" id="deactivateBtn">close</button></div>
+    </div>
+    <script>
+        const pC = document.getElementById('togglePopupOnVirus'), iC = document.getElementById('toggleInstantDelete'), d3C = document.getElementById('toggleDeleteOnThree');
+        pC.checked = localStorage.getItem('anti_popupOnVirus') === 'true'; iC.checked = localStorage.getItem('anti_instantDelete') === 'true'; d3C.checked = localStorage.getItem('anti_deleteOnThree') === 'true';
+        pC.addEventListener('change', () => localStorage.setItem('anti_popupOnVirus', pC.checked)); iC.addEventListener('change', () => localStorage.setItem('anti_instantDelete', iC.checked)); d3C.addEventListener('change', () => localStorage.setItem('anti_deleteOnThree', d3C.checked));
+        document.getElementById('deactivateBtn').addEventListener('click', () => { localStorage.setItem('antivirus_active', 'false'); alert("Антивирус ДЕАКТИВИРОВАН!"); window.location.href = 'dashboard.html'; });
+    </script>
+</body>
+</html>
