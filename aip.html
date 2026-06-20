@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>D.ip - Download A.ip</title>
+    <link rel="stylesheet" href="style.css">
+    <link href="https://googleapis.com" rel="stylesheet">
+</head>
+<body class="aip-body">
+    <button onclick="window.location.href='dashboard.html'" class="btn-close-aip"><span class="material-icons">close</span></button>
+    <div class="aip-container">
+        <h1 class="aip-main-text">download free exclusive<br>antivirus “A.ip”</h1>
+        <div class="download-wrapper-aip">
+            <a href="aip_antivirus.zip" download class="btn-download-aip" id="aipFileDownloadBtn">
+                <span class="dl-text">DOWNLOAD</span>
+                <span class="dl-arrows">
+                    <svg viewBox="0 0 24 24" fill="none"><path d="M12 4V16M12 16L18 10M12 16L6 10M4 20H20" stroke="#7cb342" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                </span>
+            </a>
+        </div>
+        <div class="aip-version-label">A. ip /v1/</div>
+    </div>
+    <script>
+        document.getElementById('aipFileDownloadBtn').addEventListener('dblclick', (e) => {
+            e.preventDefault(); 
+            localStorage.setItem('antivirus_active', 'true');
+            alert("🛡️ [Security A.ip] АКТИВИРОВАН двойным кликом!");
+        });
+    </script>
+</body>
+</html>
