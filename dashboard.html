@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>D.ip - Dashboard</title>
+    <link rel="stylesheet" href="style.css">
+    <link href="https://googleapis.com" rel="stylesheet">
+</head>
+<body class="dark-theme">
+    <div class="dashboard-container">
+        <div class="top-right-bar">
+            <div class="dropdown-wrapper">
+                <button class="btn-green-code" id="menuToggleBtn">&lt; CODE</button>
+                <div class="dropdown-menu" id="dropdownMenu">
+                    <a href="d_ip_all_free_tools.zip" download class="dropdown-item trigger-scan">zip</a>
+                    <!-- ТУТ НАЗВАНИЕ ULTRA PACK -->
+                    <button class="dropdown-item" id="vipServBtn">ULTRA pack</button>
+                    <button class="dropdown-item close-item" id="menuCloseBtn">close</button>
+                </div>
+            </div>
+        </div>
+        <div class="main-dashboard-layout">
+            <div class="left-menu-options">
+                <button class="menu-plate-btn" id="antisModBtn">ANTIS_MOD</button>
+                <button class="menu-plate-btn text-green-underline" id="zapretBtn">ZAPRET.D</button>
+                <button class="menu-plate-btn" id="aipMenuBtn">A. ip</button>
+            </div>
+            <div class="right-logo-area">
+                <div class="drag-drop-zone" id="dropZone">
+                    <img src="logo.png" alt="D.ip Big Logo" class="big-dashboard-logo">
+                    <p class="drag-hint">Перетащите файл сюда для проверки</p>
+                </div>
+                <!-- КНОПКА ОТКРЫВАЕТ ДИРЕКТОРИЮ СРАЗУ -->
+                <button class="main-screen-vip-btn" id="mainScreenVipBtn"><span class="flash-icon">⚡</span> Antivirus Mod (Flash drive)</button>
+            </div>
+        </div>
+        <!-- КНОПКА ДОНАТА ВМЕСТО VIP -->
+        <footer class="dashboard-footer"><button class="btn-donate" id="donateBtn">donate</button></footer>
+    </div>
+
+    <div class="antivirus-widget" id="antivirusWidget">
+        <div class="anti-header">
+            <button class="anti-close-btn" id="closeAntiWidget">×</button>
+            <div class="anti-shield-icon">🛡️</div>
+            <h2 class="anti-title">security A.ip</h2>
+            <button class="anti-settings-btn"><span class="material-icons">settings</span></button>
+        </div>
+        <div class="anti-body">
+            <div class="scan-item" id="itemDataLeak"><span class="scan-text">Data leak</span><span class="scan-status">—</span></div>
+            <div class="scan-item" id="itemVirus"><span class="scan-text">virus</span><span class="scan-status">—</span></div>
+            <div class="scan-item" id="itemVulnerabilities"><span class="scan-text">vulnerabilities</span><span class="scan-status">—</span></div>
+        </div>
+        <div class="anti-footer">
+            <button class="btn-delet" id="deletFileBtn" disabled>delet</button>
+            <div class="anti-small-logo">🛡️</div>
+        </div>
+    </div>
+
+    <script>
+        const menuToggleBtn = document.getElementById('menuToggleBtn');
+        const dropdownMenu = document.getElementById('dropdownMenu');
+        const menuCloseBtn = document.getElementById('menuCloseBtn');
+        const donateBtn = document.getElementById('donateBtn');
+        const vipServBtn = document.getElementById('vipServBtn');
+        const zapretBtn = document.getElementById('zapretBtn');
+        const aipMenuBtn = document.getElementById('aipMenuBtn');
+        const antisModBtn = document.getElementById('antisModBtn');
+        const mainScreenVipBtn = document.getElementById('mainScreenVipBtn');
+
+        if(localStorage.getItem('antivirus_active') === null) localStorage.setItem('antivirus_active', 'true');
+
+        // Переходы работают сразу и без условий оплаты
+        zapretBtn.addEventListener('click', () => window.location.href = 'zapret.html');
+        aipMenuBtn.addEventListener('click', () => window.location.href = 'aip.html');
+        antisModBtn.addEventListener('click', () => window.location.href = 'antis_mod.html');
+        
+        mainScreenVipBtn.addEventListener('click', () => window.location.href = 'vip-content.html');
+        vipServBtn.addEventListener('click', (e) => { e.stopPropagation(); window.location.href = 'vip-content.html'; });
+
+        menuToggleBtn.addEventListener('click', (e) => { e.stopPropagation(); dropdownMenu.classList.toggle('show'); });
+        menuCloseBtn.addEventListener('click', (e) => { e.stopPropagation(); dropdownMenu.classList.remove('show'); });
+        document.addEventListener('click', () => dropdownMenu.classList.remove('show'));
+
+        // Ваш донат на СберKids по номеру телефона
+        donateBtn.addEventListener('click', () => {
+            const sberPhoneNumber = "+79586527404"; 
+            navigator.clipboard.writeText(sberPhoneNumber).then(() => {
+                alert(
+                    `❤️ [ПОДДЕРЖКА ПРОЕКТА D. ip]\n\n` +
+                    `Вы можете добровольно поддержать разработчика любой суммой:\n` +
+                    `1. Номер Сбера автоматически скопирован в буфер обмена.\n` +
+                    `2. Откройте приложение "Сбербанк" или "СберKids".\n` +
+                    `3. Перейдите в "Платежи" -> "По номеру телефона".\n` +
+                    `4. Вставьте скопированный номер: ${sberPhoneNumber}\n` +
+                    `5. Отправьте любую сумму в качестве доната.\n\n` +
+                    `Спасибо за помощь! ✨`
+                );
+            }).catch(() => {
+                alert(`Поддержать проект можно переводом в Сбербанк по номеру телефона: ${sberPhoneNumber}`);
+            });
+        });
+
+        // Антивирус
+        const widget = document.getElementById('antivirusWidget');
+        const closeWidgetBtn = document.getElementById('closeAntiWidget');
+        const deletBtn = document.getElementById('deletFileBtn');
+        const statusLeak = document.querySelector('#itemDataLeak .scan-status');
+        const statusVirus = document.querySelector('#itemVirus .scan-status');
+        const statusVulnerabilities = document.querySelector('#itemVulnerabilities .scan-status');
+        let autoCloseTimeout, currentFile = null;
+
+        document.querySelector('.anti-settings-btn').addEventListener('click', () => { window.location.href = 'settings.html'; });
+        closeWidgetBtn.addEventListener('click', () => widget.classList.remove('active'));
+
+        function startAntivirusScan(fileName) {
+            if(localStorage.getItem('antivirus_active') === 'false') return;
+            clearTimeout(autoCloseTimeout);
+            deletBtn.disabled = true; deletBtn.classList.remove('enabled');
+            statusLeak.innerHTML = statusVirus.innerHTML = statusVulnerabilities.innerHTML = '<div class="spinner"></div>';
+            if (localStorage.getItem('anti_popupOnVirus') !== 'true') widget.classList.add('active');
+
+            let minusesCount = 0;
+            setTimeout(() => { if (fileName.endsWith('.lnk')) { statusLeak.innerHTML = '<span class="status-minus">—</span>'; minusesCount++; } else statusLeak.innerHTML = '<span class="status-check">V</span>'; }, 1000);
+            setTimeout(() => { if (fileName.toLowerCase().includes('virus') || fileName.endsWith('.bat')) { statusVirus.innerHTML = '<span class="status-minus">—</span>'; minusesCount++; } else statusVirus.innerHTML = '<span class="status-check">V</span>'; }, 2000);
+            setTimeout(() => { 
+                if (fileName.endsWith('.exe')) { statusVulnerabilities.innerHTML = '<span class="status-minus">—</span>'; minusesCount++; } else statusVulnerabilities.innerHTML = '<span class="status-check">V</span>'; 
+                processScanRules(fileName, minusesCount);
+            }, 3000);
+        }
+
+        function processScanRules(fileName, minuses) {
+            if (localStorage.getItem('anti_popupOnVirus') === 'true') {
+                if (minuses > 0) widget.classList.add('active'); else { widget.classList.remove('active'); return; }
+            }
+            if (localStorage.getItem('anti_deleteOnThree') === 'true' && minuses === 3) { executeAutoDelete(fileName); return; } 
+            if (localStorage.getItem('anti_instantDelete') === 'true' && minuses > 0 && localStorage.getItem('anti_deleteOnThree') !== 'true') { executeAutoDelete(fileName); return; }
+
+            if (minuses > 0) { deletBtn.disabled = false; deletBtn.classList.add('enabled'); currentFile = fileName; } 
+            else autoCloseTimeout = setTimeout(() => widget.classList.remove('active'), 10000);
+        }
+
+        function executeAutoDelete(fileName) { alert(`[Security A.ip]: Файл "${fileName}" автоматически уничтожен.`); widget.classList.remove('active'); }
+        deletBtn.addEventListener('click', () => { alert(`Файл удален: ${currentFile}`); widget.classList.remove('active'); currentFile = null; });
+        document.querySelectorAll('.trigger-scan').forEach(link => { link.addEventListener('click', () => startAntivirusScan('d_ip_all_free_tools.zip')); });
+        
+        const dropZone = document.getElementById('dropZone');
+        dropZone.addEventListener('dragover', (e) => { e.preventDefault(); dropZone.classList.add('dragover'); });
+        dropZone.addEventListener('dragleave', () => dropZone.classList.remove('dragover'));
+        dropZone.addEventListener('drop', (e) => { e.preventDefault(); dropZone.classList.remove('dragover'); if (e.dataTransfer.files.length > 0) startAntivirusScan(e.dataTransfer.files.name); });
+    </script>
+</body>
+</html>
