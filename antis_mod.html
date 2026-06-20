@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>D.ip - ANTIS_MOD</title>
+    <link rel="stylesheet" href="style.css">
+    <link href="https://googleapis.com" rel="stylesheet">
+</head>
+<body class="antis-body">
+    <button onclick="window.location.href='dashboard.html'" class="btn-close-antis"><span class="material-icons">close</span></button>
+    <div class="antis-container">
+        <div class="antis-row"><span class="antis-label">bypass loading of any element</span><label class="switch"><input type="checkbox" id="toggleBypassElements"><span class="slider"></span></label></div>
+        <div class="antis-row"><span class="antis-label">active host spoofing mode</span><label class="switch"><input type="checkbox" id="toggleHostSpoofing"><span class="slider"></span></label></div>
+        <div class="antis-action-zone"><button class="btn-generate-config" id="generateConfigBtn">generate active config</button></div>
+    </div>
+    <script>
+        const bypassSwitch = document.getElementById('toggleBypassElements');
+        const spoofingSwitch = document.getElementById('toggleHostSpoofing');
+        bypassSwitch.checked = localStorage.getItem('antis_bypass') === 'true';
+        spoofingSwitch.checked = localStorage.getItem('antis_spoofing') === 'true';
+        bypassSwitch.addEventListener('change', () => localStorage.setItem('antis_bypass', bypassSwitch.checked));
+        spoofingSwitch.addEventListener('change', () => localStorage.setItem('antis_spoofing', spoofingSwitch.checked));
+        document.getElementById('generateConfigBtn').addEventListener('click', () => {
+            if (!bypassSwitch.checked && !spoofingSwitch.checked) { alert("Ошибка: Включите хотя бы один режим!"); return; }
+            alert("Генерация запущена... Конфигурация ANTIS_MOD успешно создана!");
+        });
+    </script>
+</body>
+</html>
