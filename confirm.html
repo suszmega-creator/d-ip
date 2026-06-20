@@ -1,46 +1,173 @@
 <!DOCTYPE html>
-<html lang="ru">
+<html lang="en" class="notranslate" translate="no">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="google" content="notranslate">
     <title>D.ip - Verification</title>
-    <link rel="stylesheet" href="style.css">
-    <link href="https://googleapis.com" rel="stylesheet">
+    <style>
+        /* Стили один в один по вашему наброску */
+        body {
+            background-color: #ffffff !important;
+            margin: 0 !important;
+            padding: 0 !important;
+            font-family: 'Arial Black', 'Impact', sans-serif !important;
+            display: flex !important;
+            flex-direction: column !important;
+            align-items: center !important;
+            justify-content: flex-start !important;
+            min-height: 100vh !important;
+            overflow-x: hidden !important;
+        }
+
+        /* Текст сверху жирным черным цветом */
+        .main-title {
+            font-size: 1.5rem !important;
+            font-weight: 900 !important;
+            color: #000000 !important;
+            text-align: center !important;
+            text-transform: uppercase !important;
+            margin: 40px auto 10px auto !important;
+            line-height: 1.3 !important;
+            max-width: 90% !important;
+            letter-spacing: -0.5px !important;
+        }
+
+        /* Яркий розовый email пользователя */
+        .pink-email {
+            font-size: 1.3rem !important;
+            color: #ff007f !important;
+            font-weight: bold !important;
+            margin-bottom: 40px !important;
+            text-align: center !important;
+            word-break: break-all !important;
+            max-width: 90% !important;
+        }
+
+        /* Зона ввода кода */
+        .inputs-zone {
+            display: flex !important;
+            gap: 15px !important;
+            align-items: center !important;
+            justify-content: center !important;
+        }
+
+        /* Четыре вертикальных темно-серых прямоугольника */
+        .grey-box {
+            width: 55px !important;
+            height: 90px !important;
+            background-color: #7a7a7a !important;
+            border: none !important;
+            border-radius: 0px !important;
+            text-align: center !important;
+            font-size: 2.5rem !important;
+            font-weight: bold !important;
+            color: #ffffff !important;
+            outline: none !important;
+            padding: 0 !important;
+            box-sizing: border-box !important;
+        }
+
+        .grey-box:focus {
+            background-color: #555555 !important;
+        }
+
+        /* Маленькая круглая синяя стрелочка (кнопка подтверждения) */
+        .btn-blue-submit {
+            background-color: #1565c0 !important;
+            border: none !important;
+            border-radius: 50% !important;
+            width: 45px !important;
+            height: 45px !important;
+            display: flex !important;
+            justify-content: center !important;
+            align-items: center !important;
+            cursor: pointer !important;
+            margin-left: 5px !important;
+            padding: 0 !important;
+            flex-shrink: 0 !important;
+        }
+
+        /* Ссылка обновления кода */
+        .refresh-zone {
+            margin-top: 30px !important;
+            text-align: center !important;
+        }
+
+        .btn-text-refresh {
+            background: none !important;
+            border: none !important;
+            color: #7a7a7a !important;
+            font-size: 1.4rem !important;
+            font-weight: bold !important;
+            text-decoration: underline !important;
+            cursor: pointer !important;
+        }
+
+        /* Нижняя панель для кнопки back */
+        .bottom-bar {
+            position: fixed !important;
+            bottom: 30px !important;
+            left: 20px !important;
+            z-index: 100 !important;
+        }
+
+        /* Овальная капсула кнопки back */
+        .btn-capsule-back {
+            background-color: #ffffff !important;
+            color: #000000 !important;
+            border: 2px solid #000000 !important;
+            border-radius: 50px !important;
+            font-size: 1.5rem !important;
+            font-weight: 900 !important;
+            padding: 10px 35px !important;
+            cursor: pointer !important;
+            font-family: 'Arial Black', sans-serif !important;
+            text-transform: lowercase !important;
+            display: inline-block !important;
+            outline: none !important;
+        }
+    </style>
 </head>
 <body>
-    <header class="reg-header">
-        <img src="logo.png" alt="D.ip Logo" class="header-logo">
-        <button onclick="window.location.href='main.html'" class="btn-back">
-            <span class="material-icons">arrow_back</span>Back
+
+    <!-- 1. Текст: мы отправили код подтверждения почты в ваш gmail -->
+    <h1 class="main-title">мы отправили код подтверждения почты в ваш gmail</h1>
+    
+    <!-- 2. Розовый Email -->
+    <div class="pink-email" id="userEmailDisplay">testedes67@gmail.com</div>
+
+    <!-- 3. Четыре вертикальных серых прямоугольника -->
+    <div class="inputs-zone">
+        <input type="text" inputmode="numeric" pattern="[0-9]*" maxlength="1" class="grey-box" autofocus>
+        <input type="text" inputmode="numeric" pattern="[0-9]*" maxlength="1" class="grey-box">
+        <input type="text" inputmode="numeric" pattern="[0-9]*" maxlength="1" class="grey-box">
+        <input type="text" inputmode="numeric" pattern="[0-9]*" maxlength="1" class="grey-box">
+        
+        <!-- Синяя круглая стрелочка вбок -->
+        <button id="btnVerifyCode" class="btn-blue-submit" aria-label="Confirm">
+            <svg viewBox="0 0 24 24" fill="none" xmlns="http://w3.org" style="width: 24px; height: 24px; transform: rotate(-90deg);">
+                <path d="M12 5V19M12 19L19 12M12 19L5 12" stroke="white" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
         </button>
-    </header>
-    <main class="reg-main">
-        <div class="card-container confirm-card">
-            <div class="email-display-box" id="userEmailDisplay">your_email@gmail.com</div>
-            <div class="code-verification-zone">
-                <div class="code-inputs">
-                    <input type="text" maxlength="1" class="code-box" autofocus>
-                    <input type="text" maxlength="1" class="code-box">
-                    <input type="text" maxlength="1" class="code-box">
-                    <input type="text" maxlength="1" class="code-box">
-                </div>
-                <button id="btnVerifyCode" class="btn-arrow" aria-label="Подтвердить код">
-                    <svg viewBox="0 0 24 24" fill="none" xmlns="http://w3.org">
-                        <path d="M12 5V19M12 19L19 12M12 19L5 12" stroke="white" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
-                    </svg>
-                </button>
-            </div>
-            <div class="resend-container">
-                <button class="btn-resend" aria-label="Отправить код повторно">
-                    <span class="material-icons">refresh</span>
-                </button>
-            </div>
-        </div>
-    </main>
+    </div>
+
+    <!-- Ссылка обновления -->
+    <div class="refresh-zone">
+        <button class="btn-text-refresh" id="resendBtn">refresh code</button>
+    </div>
+
+    <!-- 4. Кнопка back капсулой в левом нижнем углу -->
+    <div class="bottom-bar">
+        <button onclick="window.location.href='main.html'" class="btn-capsule-back">back</button>
+    </div>
+
     <script>
-        const savedEmail = sessionStorage.getItem('currentSessionEmail') || 'unknown@gmail.com';
+        // Подгружаем реальный email или оставляем тестовый
+        const savedEmail = sessionStorage.getItem('currentSessionEmail') || 'suszmega@gmail.com';
         document.getElementById('userEmailDisplay').textContent = savedEmail;
-        const inputs = document.querySelectorAll('.code-box');
+        
+        const inputs = document.querySelectorAll('.grey-box');
         const verifyBtn = document.getElementById('btnVerifyCode');
 
         function isCodeValid() {
@@ -73,10 +200,15 @@
             inputs.focus();
         }
 
-        document.querySelector('.btn-resend').addEventListener('click', resendCode);
+        document.getElementById('resendBtn').addEventListener('click', resendCode);
+        
         inputs.forEach((input, index) => {
-            input.addEventListener('input', (e) => { if (e.target.value.length === 1 && index < inputs.length - 1) inputs[index + 1].focus(); });
-            input.addEventListener('keydown', (e) => { if (e.key === 'Backspace' && !e.target.value && index > 0) inputs[index - 1].focus(); });
+            input.addEventListener('input', (e) => { 
+                if (e.target.value.length === 1 && index < inputs.length - 1) inputs[index + 1].focus(); 
+            });
+            input.addEventListener('keydown', (e) => { 
+                if (e.key === 'Backspace' && !e.target.value && index > 0) inputs[index - 1].focus(); 
+            });
         });
 
         verifyBtn.addEventListener('click', () => {
